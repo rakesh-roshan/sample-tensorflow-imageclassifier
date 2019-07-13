@@ -4,8 +4,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
-
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
     lintOptions {
         abortOnError false
     }
@@ -13,7 +13,7 @@ android {
     defaultConfig {
         applicationId = 'com.example.androidthings.imageclassifier'
         minSdkVersion 27
-        targetSdkVersion 27
+        targetSdkVersion 28
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -31,13 +31,37 @@ android {
     aaptOptions {
         noCompress "tflite"
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'x86', 'armeabi-v7a', 'x86_64'
+            universalApk true
+        }
+    }
 }
 
 repositories {
+    maven {
+        url 'https://google.bintray.com/tensorflow'
+    }
+    mavenLocal()
     jcenter()
 }
 
 dependencies {
+    /*implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation 'com.android.support:support-v4:28.0.0'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    compileOnly 'com.google.android.things:androidthings:+'
+    implementation 'org.tensorflow:tensorflow-lite:0.0.0-nightly'*/
     implementation 'com.android.support:support-annotations:27.1.0'
     implementation 'com.google.android.things.contrib:driver-button:1.0'
     implementation 'org.tensorflow:tensorflow-lite:0.1.7'
@@ -49,4 +73,6 @@ dependencies {
     androidTestImplementation 'com.google.dexmaker:dexmaker:1.2'
     androidTestImplementation 'com.google.dexmaker:dexmaker-mockito:1.2'
     androidTestImplementation 'org.powermock:powermock-module-junit4:1.6.6'
+
+    implementation 'junit:junit:4.12'
 }
